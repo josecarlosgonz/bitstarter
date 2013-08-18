@@ -2,7 +2,8 @@ var express = require('express');
 var app = express();
 app.use(express.logger());
 var fs = require('fs');
-var message = buf.toString(fs.readFileSync('index.html'));
+var message = fs.readFileSync('index.html');
+var message = message.toString();
 
 app.get('/', function(request, response) {
   response.send(message);
