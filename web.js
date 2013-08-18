@@ -9,7 +9,7 @@ var buffer = new Buffer( fs.readFileSunc('index.html', function(err,data){
 
 
 app.get('/', function(request, response) {
-  response.send(buffer);
+  response.send('Hello world 2.0!');
 });
 
 var port = process.env.PORT || 5000;
