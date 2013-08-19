@@ -1,4 +1,3 @@
-
 #!/usr/bin/env node
 /*
 Automatically grade files for the presence of specified HTML tags/attributes.
@@ -21,7 +20,7 @@ References:
    - https://developer.mozilla.org/en-US/docs/JSON
    - https://developer.mozilla.org/en-US/docs/JSON#JSON_in_Firefox_2
 */
-
+var rest = require('restler')
 var fs = require('fs');
 var program = require('commander');
 var cheerio = require('cheerio');
@@ -41,6 +40,10 @@ var cheerioHtmlFile = function(htmlfile) {
     return cheerio.load(fs.readFileSync(htmlfile));
 };
 
+var cheerioUrlResult = function(url_result) {
+    return cheerio.load(url_result);
+};
+
 var loadChecks = function(checksfile) {
     return JSON.parse(fs.readFileSync(checksfile));
 };
@@ -56,12 +59,26 @@ var checkHtmlFile = function(htmlfile, checksfile) {
     return out;
 };
 
+
+
+
 var clone = function(fn) {
     // Workaround for commander.js issue.
     // http://stackoverflow.com/a/6772648
     return fn.bind({});
 };
 
+
+var checkUrlResult = function(url_result, checksfile) {
+    $ = cheerioUrlResult(url_result);
+    var checks = loadChecks(checksfile).sort();
+    var out = {};
+    for(var ii in checks) {
+    var present = $(checks[ii]).length > 0;
+    out[checks[ii]] = present;
+    }
+    return out;
+};
 if(require.main == module) {
     program
         .option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
