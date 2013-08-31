@@ -1,4 +1,4 @@
-# Bitstarter project
+# Rental app project
 
 This is a barebones Node.js app using the [Express](http://expressjs.com/) framework.
 
